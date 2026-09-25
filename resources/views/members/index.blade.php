@@ -7,6 +7,12 @@
 
     <p><a href="{{ route('members.create') }}" class="btn">+ Tambah Anggota</a></p>
 
+    <form method="GET" action="{{ route('members.index') }}" style="margin-bottom: 16px;">
+        <label for="search">Cari Nama Anggota</label>
+        <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Masukkan nama anggota...">
+        <button type="submit" class="btn" style="margin-top: 12px;">Cari</button>
+    </form>
+
     <table>
         <thead>
             <tr>
@@ -33,6 +39,8 @@
                         <span class="badge badge-{{ $member['status'] }}">{{ ucfirst($member['status']) }}</span>
                     </td>
                     <td>
+                        <a href="{{ route('members.show', $member['id']) }}">Detail</a>
+                        |
                         <a href="{{ route('members.edit', $member['id']) }}">Edit</a>
                         |
                         <form class="inline" action="{{ route('members.destroy', $member['id']) }}" method="POST">
@@ -50,5 +58,5 @@
         </tbody>
     </table>
 
-    <p><em>Catatan: data di atas masih data dummy (array statis di Controller), belum dari database. Migration &amp; Model Eloquent baru dibuat di Pertemuan 5.</em></p>
+    {{ $members->appends(request()->query())->links() }}
 @endsection
