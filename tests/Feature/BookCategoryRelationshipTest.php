@@ -4,47 +4,23 @@ namespace Tests\Feature;
 
 use App\Book;
 use App\Category;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use App\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class BookCategoryRelationshipTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        config([
-            'database.default' => 'sqlite',
-            'database.connections.sqlite' => [
-                'driver' => 'sqlite',
-                'database' => ':memory:',
-                'prefix' => '',
-            ],
-        ]);
-
-        Schema::create('categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama_kategori');
-            $table->text('deskripsi')->nullable();
-            $table->timestamps();
-        });
-
-        Schema::create('books', function (Blueprint $table) {
-            $table->id();
-            $table->string('judul');
-            $table->string('penulis');
-            $table->string('penerbit');
-            $table->integer('tahun_terbit');
-            $table->string('isbn')->nullable();
-            $table->integer('stok');
-            $table->unsignedBigInteger('category_id');
-            $table->timestamps();
-        });
-    }
+    use RefreshDatabase;
 
     public function test_books_page_shows_category_name_instead_of_raw_id(): void
     {
+        $user = User::create([
+            'name' => 'Petugas',
+            'email' => 'petugas@example.com',
+            'password' => bcrypt('password'),
+            'role' => 'petugas',
+        ]);
+
         $category = Category::create([
             'nama_kategori' => 'Fiksi',
             'deskripsi' => 'Novel dan cerita fiksi',
@@ -60,7 +36,7 @@ class BookCategoryRelationshipTest extends TestCase
             'category_id' => $category->id,
         ]);
 
-        $response = $this->get('/books');
+        $response = $this->actingAs($user)->get('/books');
 
         $response->assertStatus(200)
             ->assertSeeText('Fiksi');
