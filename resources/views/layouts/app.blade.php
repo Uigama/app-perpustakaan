@@ -23,6 +23,9 @@
         .badge { padding: 2px 8px; border-radius: 4px; font-size: 13px; }
         .badge-aktif { background: #d1fae5; color: #065f46; }
         .badge-nonaktif { background: #fee2e2; color: #991b1b; }
+        .badge-dikembalikan { background: #d1fae5; color: #065f46; }
+        .badge-dipinjam { background: #fef3c7; color: #92400e; }
+        .badge-terlambat { background: #fee2e2; color: #991b1b; }
         footer { text-align: center; padding: 20px; color: #6b7280; font-size: 14px; border-top: 1px solid #e5e7eb; margin-top: 40px; }
     </style>
 </head>
