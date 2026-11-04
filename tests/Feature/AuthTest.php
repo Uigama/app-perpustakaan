@@ -24,7 +24,7 @@ class AuthTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response->assertRedirect('/books');
+        $response->assertRedirect('/');
         $this->assertAuthenticated();
     }
 }
